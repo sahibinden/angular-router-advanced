@@ -7,7 +7,7 @@ AngularJS, geri çevrilebilir ve dil destekli URL yönlendirmesini desteklememek
 
 `angular-router-advanced` servisini kullanabilmek için Github depomuzdaki `router.js` dosyasını HTML dokümanınıza eklemeniz ve Angular modülünüze `sahibinden.router` adıyla bağımlılık olarak bildirmeniz yeterlidir.
 
-```
+```html
 <html>
     <head>
         <script src="angular.js"></script>
@@ -16,7 +16,7 @@ AngularJS, geri çevrilebilir ve dil destekli URL yönlendirmesini desteklememek
     ...
 ```
 
-```
+```js
 var app = angular.module('myApp', ['sahibinden.router']);
 ```
 
@@ -24,7 +24,7 @@ var app = angular.module('myApp', ['sahibinden.router']);
 
 AngularJS modülünüze config metoduyla aşağıdaki şekilde URL konfigürasyonunuzu girebilirsiniz:
 
-```
+```js
 var myApp = angular.module('myApp', ['sahibinden.router'])
 
 .config(function ($routeProvider, $locationProvider, saRouterProvider) {
@@ -69,7 +69,7 @@ var myApp = angular.module('myApp', ['sahibinden.router'])
 
 Burada her bir view için Türkçe ve İngilizce URL tanımlamaları girdik. Bu kurallara göre kullanıcı `/mesajlarim` sayfasına girdiğinde `MyAccountMessages.html` dokümanı `MyAccountMessagesCtrl` adlı controller ile çalıştırılacaktır. Controller içerisinde dil değişkeni `$rootScope`'dan `lang` değeri ile okunabilir:
 
-```
+```js
 myApp.controller('MyAccountMessagesCtrl', function ($scope, $rootScope) {
     $scope.welcomeMessage = 'Welcome!';
 
@@ -81,13 +81,13 @@ myApp.controller('MyAccountMessagesCtrl', function ($scope, $rootScope) {
 
 Sayfalara bağlantı verirken URL'leri elle yazmak yerine `route` adı ile dinamik olarak URL üretmek mümkündür:
 
-```
+```html
 <a ng-href="{{ url('my_messages') }}">Mesajlarim</a>
 ```
 
 Eğer URL konfigürasyonunda dinamik değerler varsa bunlar url fonksiyonuna 2. parametrede nesne olarak gönderilebilir:
 
-```
+```html
 <ul>
     <li ng-repeat="message in messages">
         <a ng-href="{{ url('my_messages_detail', { id: message.id }) }}" ng-bind="message.subject"></a>
