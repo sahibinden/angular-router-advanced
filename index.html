@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Angular-router-advanced by sahibinden</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Angular-router-advanced</h1>
+        <p>AngularJS router implemtation that supports url building and language - AngularJS için dil destekli ve geri çevrilebilir url servisi</p>
+
+        <p class="view"><a href="https://github.com/sahibinden/angular-router-advanced">View the Project on GitHub <small>sahibinden/angular-router-advanced</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/sahibinden/angular-router-advanced/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/sahibinden/angular-router-advanced/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/sahibinden/angular-router-advanced">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="angular-router-advanced" class="anchor" href="#angular-router-advanced"><span class="octicon octicon-link"></span></a>angular-router-advanced</h1>
+
+<p>AngularJS, geri çevrilebilir ve dil destekli URL yönlendirmesini desteklememektedir. Bu da çok dilli AngularJS uygulamaları yazmayı zorlaştırmaktadır. <code>angular-router-advanced</code> servisi her view için birden fazla dil destekleyen URL tanımlaması yapma imkanı veren ve bu URL'leri kolayca üreterek HTML içinde kullanmayı sağlayan bir Angular provider'ıdır.</p>
+
+<h2>
+<a name="kurulum" class="anchor" href="#kurulum"><span class="octicon octicon-link"></span></a>Kurulum</h2>
+
+<p><code>angular-router-advanced</code> servisini kullanabilmek için Github depomuzdaki <code>router.js</code> dosyasını HTML dokümanınıza eklemeniz ve Angular modülünüze <code>sahibinden.router</code> adıyla bağımlılık olarak bildirmeniz yeterlidir.</p>
+
+<div class="highlight"><pre><span class="nt">&lt;html&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+        <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"angular.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+        <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"router.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+    ...
+</pre></div>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'myApp'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'sahibinden.router'</span><span class="p">]);</span>
+</pre></div>
+
+<h2>
+<a name="kullan%C4%B1m" class="anchor" href="#kullan%C4%B1m"><span class="octicon octicon-link"></span></a>Kullanım</h2>
+
+<p>AngularJS modülünüze config metoduyla aşağıdaki şekilde URL konfigürasyonunuzu girebilirsiniz:</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">myApp</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'myApp'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'sahibinden.router'</span><span class="p">])</span>
+
+<span class="p">.</span><span class="nx">config</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">$routeProvider</span><span class="p">,</span> <span class="nx">$locationProvider</span><span class="p">,</span> <span class="nx">saRouterProvider</span><span class="p">)</span> <span class="p">{</span>
+    <span class="s1">'use strict'</span><span class="p">;</span>
+
+    <span class="c1">// Url routing icin html5 pushstate kullan</span>
+    <span class="nx">$locationProvider</span><span class="p">.</span><span class="nx">html5Mode</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+
+    <span class="c1">// Url tanimlamalari</span>
+    <span class="nx">saRouterProvider</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'my_messages_detail'</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s1">'tr'</span><span class="o">:</span> <span class="s1">'/mesajlarim/detay/:id'</span><span class="p">,</span>
+            <span class="s1">'en'</span><span class="o">:</span> <span class="s1">'/messages/detail/:idd'</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="nx">controller</span><span class="o">:</span> <span class="s1">'MyAccountMessageDetailCtrl'</span><span class="p">,</span>
+            <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">'/views/myAccount/messageDetail/MyAccountMessageDetail.html'</span>
+        <span class="p">})</span>
+
+        <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'my_messages'</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s1">'tr'</span><span class="o">:</span> <span class="s1">'/mesajlarim'</span><span class="p">,</span>
+            <span class="s1">'en'</span><span class="o">:</span> <span class="s1">'/messages'</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="nx">controller</span><span class="o">:</span> <span class="s1">'MyAccountMessagesCtrl'</span><span class="p">,</span>
+            <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">'/views/myAccount/messages/MyAccountMessages.html'</span>
+        <span class="p">})</span>
+
+        <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'my_account_home'</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s1">'tr'</span><span class="o">:</span> <span class="s1">'/'</span><span class="p">,</span>
+            <span class="s1">'en'</span><span class="o">:</span> <span class="s1">'/home'</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="nx">controller</span><span class="o">:</span> <span class="s1">'MyAccountDashboardCtrl'</span><span class="p">,</span>
+            <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">'/views/myAccount/dashboard/MyAccountDashboard.html'</span>
+        <span class="p">})</span>
+
+        <span class="p">.</span><span class="nx">otherwise</span><span class="p">({</span>
+            <span class="nx">redirectTo</span> <span class="o">:</span> <span class="s1">'/'</span>
+        <span class="p">})</span>
+
+        <span class="p">.</span><span class="nx">install</span><span class="p">(</span><span class="nx">$routeProvider</span><span class="p">);</span>
+
+<span class="p">});</span>
+</pre></div>
+
+<p>Burada her bir view için Türkçe ve İngilizce URL tanımlamaları girdik. Bu kurallara göre kullanıcı <code>/mesajlarim</code> sayfasına girdiğinde <code>MyAccountMessages.html</code> dokümanı <code>MyAccountMessagesCtrl</code> adlı controller ile çalıştırılacaktır. Controller içerisinde dil değişkeni <code>$rootScope</code>'dan <code>lang</code> değeri ile okunabilir:</p>
+
+<div class="highlight"><pre><span class="nx">myApp</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">'MyAccountMessagesCtrl'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">$rootScope</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">$scope</span><span class="p">.</span><span class="nx">welcomeMessage</span> <span class="o">=</span> <span class="s1">'Welcome!'</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">$rootScope</span><span class="p">.</span><span class="nx">lang</span> <span class="o">==</span> <span class="s1">'tr'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">welcomeMessage</span> <span class="o">=</span> <span class="s1">'Hoşgeldiniz!'</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>Sayfalara bağlantı verirken URL'leri elle yazmak yerine <code>route</code> adı ile dinamik olarak URL üretmek mümkündür:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;a</span> <span class="na">ng-href=</span><span class="s">"{{ url('my_messages') }}"</span><span class="nt">&gt;</span>Mesajlarim<span class="nt">&lt;/a&gt;</span>
+</pre></div>
+
+<p>Eğer URL konfigürasyonunda dinamik değerler varsa bunlar url fonksiyonuna 2. parametrede nesne olarak gönderilebilir:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">ng-repeat=</span><span class="s">"message in messages"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">ng-href=</span><span class="s">"{{ url('my_messages_detail', { id: message.id }) }}"</span> <span class="na">ng-bind=</span><span class="s">"message.subject"</span><span class="nt">&gt;&lt;/a&gt;</span>
+    <span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</pre></div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/sahibinden">sahibinden</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
