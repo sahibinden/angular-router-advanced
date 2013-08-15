@@ -97,3 +97,27 @@ Eğer URL konfigürasyonunda dinamik değerler varsa bunlar url fonksiyonuna 2. 
     </li>
 </ul>
 ```
+
+Uygulamanızın çoklu dil desteği yoksa, standart yönteme yakın şekilde, sadece varsayılan dilin url'i belirtilerek de route'lar belirlenebilir:
+
+```js
+...
+    // Url tanimlamalari
+    saRouterProvider.when('/mesajlarim/detay/:id', {
+            name: 'my_messages_detail',
+            controller: 'MyAccountMessageDetailCtrl',
+            templateUrl: '/views/myAccount/messageDetail/MyAccountMessageDetail.html'
+        })
+...
+```
+
+Yukarıdaki yazım şeklinde sadece varsayılan dil için(eğer değiştirilmezse İngilizce'dir) değer girilmiştir. Varsayılan dil de aşağıdaki komut ile belirlenebilir:
+
+```js
+
+saRouterProvider.setDefaultLang('tr');
+
+// yada
+
+saRouter.setDefaultLang('tr');
+```
