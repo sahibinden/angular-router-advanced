@@ -6,8 +6,6 @@
  *
  * Dil destekli, ters çevrilebilir router kütüphanesi.
  *
- * http://github.com/sahibinden/angular-router-advanced/
- *
  <doc:example>
      <doc:source>
          <script>
@@ -16,10 +14,11 @@
                     'use strict';
 
                     // Url tanimlamalari
-                    saRouter.when('my_messages', {
+                    saRouter.when({
                             'tr': '/bana-ozel/mesajlarim/detay/:id',
                             'en': '/my-account/messages/detail/:id'
                         }, {
+                            name: 'my_messages',
                             controller: 'MyAccountMessageDetailCtrl',
                             templateUrl: '/views/myAccount/messages/MyAccountMessageDetail.html'
                         })
@@ -42,31 +41,50 @@ angular
         'use strict';
 
         var lookup = {},
-            otherwiseLookup = null;
+            otherwiseLookup = null,
+            defaultLang = 'en';
 
-        this.when = function (key, url, params) {
-            var lang, routeParams;
+        this.setDefaultLang = function (lang) {
+            defaultLang = lang;
+        };
+
+        this.getDefaultLang = function () {
+            return defaultLang;
+        };
+
+        this.when = function (url, params) {
+            var lang, key;
+
+            key = params.name || url;
 
             if (angular.isObject(url)) {
                 for (lang in url) {
-                    routeParams = angular.extend(params, {
+                    lookup[key + '_' + lang] = {
+                        url: url[lang],
+                        params: angular.extend({
                             lang: lang,
                             routeName: key + '_' + lang
-                        });
-
-                    lookup[routeParams.routeName] = {
-                        url: url[lang],
-                        params: routeParams
+                        }, params)
                     };
-                }
-            } else {
-                routeParams = angular.extend(params, {
-                        routeName: key
-                    });
 
+                }
+
+                // Route for default language
+                lookup[key] = {
+                    url: url[defaultLang],
+                    params: angular.extend({
+                        lang: defaultLang,
+                        routeName: key
+                    }, params)
+                };
+
+            } else {
                 lookup[key] = {
                     url : url,
-                    params : routeParams
+                    params : angular.extend({
+                        lang: defaultLang,
+                        routeName: key
+                    }, params)
                 };
             }
 
@@ -108,6 +126,14 @@ angular
 
         this.$get = function () {
             return {
+                setDefaultLang : function (lang) {
+                    defaultLang = lang;
+                },
+
+                getDefaultLang : function () {
+                    return defaultLang;
+                },
+
                 replaceUrlParams : function (url, params) {
                     var k, v;
 
@@ -144,8 +170,10 @@ angular
     .run(function ($rootScope, saRouter, $route) {
         'use strict';
 
+        var defaultLang = saRouter.getDefaultLang();
+
         $rootScope.$on('$routeChangeStart', function (previous, current) {
-            $rootScope.lang = current.lang;
+            $rootScope.lang = current.lang || defaultLang;
         });
 
         // Returns url that has given routeName with optional arguments

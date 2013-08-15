@@ -34,26 +34,29 @@ var myApp = angular.module('myApp', ['sahibinden.router'])
     $locationProvider.html5Mode(true);
 
     // Url tanimlamalari
-    saRouterProvider.when('my_messages_detail', {
+    saRouterProvider.when({
             'tr': '/mesajlarim/detay/:id',
             'en': '/messages/detail/:idd'
         }, {
+            name: 'my_messages_detail',
             controller: 'MyAccountMessageDetailCtrl',
             templateUrl: '/views/myAccount/messageDetail/MyAccountMessageDetail.html'
         })
 
-        .when('my_messages', {
+        .when({
             'tr': '/mesajlarim',
             'en': '/messages'
         }, {
+            name: 'my_messages',
             controller: 'MyAccountMessagesCtrl',
             templateUrl: '/views/myAccount/messages/MyAccountMessages.html'
         })
 
-        .when('my_account_home', {
+        .when({
             'tr': '/',
             'en': '/home'
         }, {
+            name: 'my_account_home',
             controller: 'MyAccountDashboardCtrl',
             templateUrl: '/views/myAccount/dashboard/MyAccountDashboard.html'
         })
