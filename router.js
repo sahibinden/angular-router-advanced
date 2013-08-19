@@ -199,6 +199,7 @@ angular
 
             angular.forEach(routeNames, function (item) {
                 // Build a map that has keys as routeNames with current language postfixes if is necessary
+                routeNameMap[item] = true;
                 routeNameMap[item + (current.lang ? '_' + current.lang : '')] = true;
             });
 
