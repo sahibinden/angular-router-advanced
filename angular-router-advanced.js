@@ -167,7 +167,7 @@ angular
         };
     })
 
-    .run(function ($rootScope, saRouter, $route) {
+    .run(['$rootScope', 'saRouter', '$route', function ($rootScope, saRouter, $route) {
         'use strict';
 
         var defaultLang = saRouter.getDefaultLang();
@@ -206,5 +206,5 @@ angular
             // Check current routeName is in current routename map keys
             return current.routeName in routeNameMap;
         };
-    });
+    }]);
 
